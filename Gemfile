@@ -88,3 +88,5 @@ gem "simple_calendar", "~> 3.0"
 gem "ice_cube"
 
 gem "webmock", "~> 3.26", group: :test
+
+gem "acts_as_list", "~> 1.2"

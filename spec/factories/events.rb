@@ -5,7 +5,7 @@ FactoryBot.define do
     description { "MyText" }
     start_time { "2026-01-21 18:54:59" }
     end_time { "2026-01-21 18:54:59" }
-    status { 1 }
+    status { "planned" }
 
     factory :meal, class: 'Meal' do
       type { 'Meal' }

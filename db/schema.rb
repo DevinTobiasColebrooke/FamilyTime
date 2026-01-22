@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_01_22_032448) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_22_065934) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -78,6 +78,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_22_032448) do
     t.text "recurrence_rule"
     t.integer "parent_event_id"
     t.decimal "cost", precision: 10, scale: 2, default: "0.0"
+    t.integer "position"
   end
 
   create_table "meal_items", force: :cascade do |t|

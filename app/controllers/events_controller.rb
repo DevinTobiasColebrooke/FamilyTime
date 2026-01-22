@@ -5,10 +5,15 @@ class EventsController < ApplicationController
     @events = Event.search(params[:query])
                    .by_type(params[:type])
                    .by_status(params[:status])
+                   .by_time_range(params[:time_range])
 
-    @planned_events = @events.where(status: :planned).order(start_time: :asc)
-    @doing_events = @events.where(status: :doing).order(start_time: :asc)
-    @done_events = @events.where(status: :done).order(start_time: :desc)
+    @planned_events = @events.where(status: :planned).order(position: :asc)
+    @doing_events = @events.where(status: :doing).order(position: :asc)
+    @done_events = @events.where(status: :done).order(position: :asc)
+
+    @planned_cost = @planned_events.sum(:cost)
+    @doing_cost = @doing_events.sum(:cost)
+    @done_cost = @done_events.sum(:cost)
 
     # Simple alert logic: Events starting within the next 2 hours or currently happening
     @imminent_events = Event.where(status: [ :planned, :doing ])
@@ -37,7 +42,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    type = params[:event][:type] || "Event"
+    type = params.dig(:event, :type) || "Event"
     @event = type.constantize.new(event_params)
 
     if @event.save
@@ -63,6 +68,9 @@ class EventsController < ApplicationController
 
   def update_status
     @event.update(status: params[:status])
+    if params[:position].present?
+      @event.insert_at(params[:position].to_i + 1)
+    end
 
     respond_to do |format|
       format.turbo_stream

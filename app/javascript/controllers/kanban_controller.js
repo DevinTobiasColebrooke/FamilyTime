@@ -12,6 +12,7 @@ export default class extends Controller {
         animation: 150,
         ghostClass: "bg-gray-200",
         dragClass: "opacity-50",
+        forceFallback: true,
         onEnd: this.end.bind(this)
       })
     })
@@ -21,6 +22,7 @@ export default class extends Controller {
     const itemEl = event.item
     const newStatus = event.to.dataset.status
     const eventId = itemEl.dataset.id
+    const newIndex = event.newIndex
 
     // Update the status via AJAX
     fetch(`/events/${eventId}/update_status`, {
@@ -29,7 +31,7 @@ export default class extends Controller {
         "Content-Type": "application/json",
         "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content
       },
-      body: JSON.stringify({ status: newStatus })
+      body: JSON.stringify({ status: newStatus, position: newIndex })
     })
     .then(response => {
       if (!response.ok) {

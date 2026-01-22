@@ -16,9 +16,25 @@ class Event < ApplicationRecord
   # Filter scopes
   scope :by_type, ->(type) { where(type: type) if type.present? }
   scope :by_status, ->(status) { where(status: status) if status.present? }
+  scope :by_time_range, ->(range) {
+    case range
+    when "today"
+      where(start_time: Time.current.all_day)
+    when "week"
+      where(start_time: Time.current.all_week)
+    when "month"
+      where(start_time: Time.current.all_month)
+    when "next_week"
+      where(start_time: 1.week.from_now.all_week)
+    else
+      all
+    end
+  }
 
   belongs_to :parent_event, class_name: "Event", optional: true
   has_many :recurring_instances, class_name: "Event", foreign_key: "parent_event_id"
+
+  acts_as_list scope: [ :status ]
 
   serialize :recurrence_rule, coder: YAML
 
