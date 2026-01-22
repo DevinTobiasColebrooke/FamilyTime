@@ -1,0 +1,134 @@
+<div class="container mx-auto px-4 py-8 max-w-4xl font-sans">
+  <%# Navigation %>
+  <%= link_to events_path, class: "group inline-flex items-center text-sm font-semibold text-gray-500 hover:text-gray-900 mb-6 transition-colors" do %>
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    </svg>
+    Back to Board
+  <% end %>
+
+  <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    
+    <%# Hero Header %>
+    <div class="relative px-8 py-10 <%= @event.type == 'Meal' ? 'bg-gradient-to-br from-emerald-50 to-teal-100/50' : 'bg-gradient-to-br from-blue-50 to-indigo-100/50' %>">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <div class="flex items-center gap-3 mb-3">
+             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm <%= @event.type == 'Meal' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800' %>">
+               <%= @event.type %>
+             </span>
+             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border
+               <%= @event.planned? ? 'bg-white border-gray-200 text-gray-600' : 
+                   @event.doing? ? 'bg-blue-50 border-blue-200 text-blue-700' : 
+                   'bg-green-50 border-green-200 text-green-700' %>">
+               <%= @event.status.humanize %>
+             </span>
+          </div>
+          <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight"><%= @event.title %></h1>
+        </div>
+        
+        <%# Action Buttons (Top Right on Desktop) %>
+        <div class="flex items-center gap-2">
+           <%= link_to edit_event_path(@event), class: "p-2 text-gray-500 hover:text-gray-900 hover:bg-white/50 rounded-lg transition-all", title: "Edit" do %>
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+             </svg>
+           <% end %>
+           <%= button_to event_path(@event), method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "p-2 text-red-400 hover:text-red-700 hover:bg-red-50 rounded-lg transition-all", title: "Delete" do %>
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+           <% end %>
+        </div>
+      </div>
+      
+      <% if @event.description.present? %>
+        <p class="mt-4 text-lg text-gray-600 max-w-2xl leading-relaxed"><%= @event.description %></p>
+      <% end %>
+    </div>
+
+    <%# Metadata Grid %>
+    <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100 bg-white border-b border-gray-100">
+      <%# Time %>
+      <div class="p-6 flex items-start gap-3">
+         <div class="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+           </svg>
+         </div>
+         <div>
+           <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Time</p>
+           <p class="text-gray-900 font-semibold mt-0.5"><%= @event.start_time.strftime("%A, %b %d") %></p>
+           <p class="text-gray-600 text-sm"><%= @event.start_time.strftime("%l:%M %p") %> - <%= @event.end_time.strftime("%l:%M %p") %></p>
+         </div>
+      </div>
+
+      <%# Cost %>
+      <div class="p-6 flex items-start gap-3">
+         <div class="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
+           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+           </svg>
+         </div>
+         <div>
+           <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Total Cost</p>
+           <p class="text-gray-900 font-bold font-mono text-lg mt-0.5">
+             <%= number_to_currency(@event.cost.to_d + (@event.type == 'Meal' ? @event.meal_items.sum(:cost).to_d : 0)) %>
+           </p>
+           <% if @event.cost > 0 && @event.type == 'Meal' %>
+             <p class="text-xs text-gray-400 mt-1">
+               Event: <%= number_to_currency(@event.cost) %> • Items: <%= number_to_currency(@event.meal_items.sum(:cost)) %>
+             </p>
+           <% end %>
+         </div>
+      </div>
+
+       <%# Weather %>
+       <div class="p-6">
+         <% if @weather_forecast %>
+            <div class="flex items-center gap-3">
+              <div class="text-4xl filter drop-shadow-sm">
+                  <% case @weather_forecast[:code] %>
+                  <% when 0, 1 %>
+                    ☀️
+                  <% when 2, 3 %>
+                    ⛅
+                  <% when 45, 48 %>
+                    🌫️
+                  <% when 51, 53, 55, 61, 63, 65, 80, 81, 82 %>
+                    🌧️
+                  <% when 71, 73, 75, 77, 85, 86 %>
+                    🌨️
+                  <% when 95, 96, 99 %>
+                    ⚡
+                  <% else %>
+                    ☁️
+                  <% end %>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-gray-500 uppercase tracking-wide">Weather</p>
+                <p class="text-gray-900 font-medium capitalize"><%= @weather_forecast[:description] %></p>
+                <p class="text-xs text-gray-500 font-mono">H: <%= @weather_forecast[:max_temp] %>° L: <%= @weather_forecast[:min_temp] %>°</p>
+              </div>
+            </div>
+         <% else %>
+            <div class="flex items-center gap-3 opacity-50">
+               <div class="p-2 bg-gray-100 rounded-lg"><span class="text-2xl">☁️</span></div>
+               <p class="text-sm text-gray-400">No forecast available</p>
+            </div>
+         <% end %>
+       </div>
+    </div>
+
+    <%# Main Content Area %>
+    <div class="p-8 bg-gray-50/50 min-h-[300px]">
+      
+      <% if @event.type == 'Meal' %>
+        <%= render 'meal_details', event: @event %>
+      <% elsif @event.type == 'Activity' %>
+        <%= render 'activity_details', event: @event %>
+      <% end %>
+      
+    </div>
+  </div>
+</div>

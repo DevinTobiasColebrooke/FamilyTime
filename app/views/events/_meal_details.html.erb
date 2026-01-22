@@ -1,0 +1,83 @@
+<div class="max-w-3xl mx-auto">
+  <h2 class="text-lg font-bold text-gray-800 mb-6 flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+    </svg>
+    Ingredients & Items
+  </h2>
+
+  <div id="meal_items" class="space-y-3 mb-8">
+    <% event.meal_items.each do |item| %>
+      <div class="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-shadow group">
+        <div class="flex items-center gap-4 flex-grow">
+           <%# Status Dot %>
+           <div class="h-2.5 w-2.5 rounded-full flex-shrink-0 <%= 
+              item.status == 'proposed' ? 'bg-amber-400' : 
+              item.status == 'selected' ? 'bg-emerald-500' : 
+              'bg-gray-300' %>" title="<%= item.status.humanize %>"></div>
+           
+           <div>
+              <div class="font-medium text-gray-900 <%= 'line-through text-gray-400 decoration-gray-300' if item.removed? %>">
+                <%= item.name %>
+              </div>
+              <% if item.note.present? %>
+                <div class="text-xs text-gray-500 mt-0.5"><%= item.note %></div>
+              <% end %>
+           </div>
+        </div>
+
+        <div class="flex items-center gap-4">
+          <% if item.cost.present? && item.cost > 0 %>
+            <span class="font-mono text-sm text-gray-600 bg-gray-50 px-2 py-1 rounded border border-gray-100">
+              <%= number_to_currency(item.cost) %>
+            </span>
+          <% end %>
+
+          <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+            <%= form_with(model: [event, item], url: meal_meal_item_path(event, item), method: :patch) do |f| %>
+              <%= f.select :status, MealItem.statuses.keys.map { |w| [w.humanize, w] }, {}, 
+                  onchange: "this.form.requestSubmit()", 
+                  class: "text-xs py-1 pl-2 pr-6 rounded-md border-gray-200 text-gray-600 focus:ring-emerald-500 focus:border-emerald-500 cursor-pointer" %>
+            <% end %>
+            
+            <%= button_to meal_meal_item_path(event, item), method: :delete, class: "p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors" do %>
+               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+               </svg>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    
+    <% if event.meal_items.empty? %>
+      <div class="text-center py-8 bg-white rounded-xl border border-dashed border-gray-300">
+        <p class="text-gray-500">No items added yet.</p>
+      </div>
+    <% end %>
+  </div>
+
+  <%# Add Item "Chat" Input %>
+  <div class="bg-white p-2 rounded-2xl shadow-sm border border-gray-200">
+    <%= form_with(model: [ event, MealItem.new ], url: meal_meal_items_path(event), class: "flex items-center gap-2") do |f| %>
+      <div class="flex-grow relative">
+         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+           </svg>
+         </div>
+         <%= f.text_field :name, placeholder: "Add a new item...", class: "block w-full pl-10 pr-3 py-3 border-none rounded-xl focus:ring-2 focus:ring-emerald-500 placeholder-gray-400 bg-transparent text-gray-900" %>
+      </div>
+      
+      <div class="flex items-center gap-2 pr-2">
+         <%= f.number_field :cost, step: "0.01", placeholder: "$0.00", class: "w-24 border-transparent bg-gray-50 rounded-lg focus:ring-emerald-500 focus:bg-white text-sm py-2 text-right" %>
+         <%= f.select :status, MealItem.statuses.keys.map { |w| [w.humanize, w] }, {}, class: "border-transparent bg-gray-50 rounded-lg focus:ring-emerald-500 focus:bg-white text-sm py-2 pl-3 pr-8" %>
+         <%= f.button type: "submit", class: "p-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl shadow-sm transition-colors" do %>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+         <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

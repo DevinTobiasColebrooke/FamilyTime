@@ -1,0 +1,12 @@
+21:23:42 web.1  | started with pid 407490
+21:23:42 css.1  | started with pid 407491
+21:23:43 web.1  | => Booting Puma
+21:23:43 web.1  | => Rails 8.0.4 application starting in development 
+21:23:43 web.1  | => Run `bin/rails server --help` for more startup options
+21:23:43 web.1  | A server is already running (pid: 402821, file: /home/dtcolebrooke/dev/rails_projects/FamilyTime/tmp/pids/server.pid).
+21:23:43 web.1  | Exiting
+21:23:43 css.1  | ≈ tailwindcss v4.1.18
+21:23:43 css.1  | 
+21:23:44 web.1  | exited with code 1
+21:23:44 system | sending SIGTERM to all processes
+21:23:44 css.1  | exited with code 0

@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+/* Pagy Pagination Styles */
+.pagy {
+  @apply flex space-x-1 font-semibold text-sm text-gray-500;
+  a:not(.gap) {
+    @apply block rounded-lg px-3 py-1 bg-gray-200;
+    &:hover {
+      @apply bg-gray-300;
+    }
+    &:not([href]) { /* disabled links */
+      @apply text-gray-300 bg-gray-100 cursor-default;
+    }
+    &.current {
+      @apply text-white bg-gray-400;
+    }
+  }
+  label {
+    @apply inline-block whitespace-nowrap bg-gray-200 rounded-lg px-3 py-0.5;
+    input {
+      @apply bg-gray-100 border-none rounded-md;
+    }
+  }
+}
+
+/* Simple Calendar Overrides */
+.simple-calendar {
+  @apply w-full border-collapse rounded-lg overflow-hidden;
+  
+  thead th {
+    @apply py-3 px-4 bg-gray-50 text-gray-500 font-semibold text-sm uppercase tracking-wider border-b border-gray-200;
+  }
+
+  tbody td {
+    @apply border border-gray-100 align-top p-0 h-32 md:h-40 w-[14.28%] bg-white hover:bg-gray-50 transition-colors duration-150;
+  }
+
+  .calendar-heading {
+    @apply flex justify-between items-center mb-6 px-4;
+    
+    a {
+      @apply px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 shadow-sm transition-colors;
+    }
+
+    span.calendar-title {
+      @apply text-xl font-bold text-gray-900;
+    }
+  }
+}
+
+/* Custom Scrollbar for Event Lists */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: #e5e7eb;
+  border-radius: 20px;
+}
+.scrollbar-thin:hover::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+}

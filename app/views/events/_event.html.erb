@@ -1,0 +1,26 @@
+<div id="<%= dom_id event %>" data-id="<%= event.id %>" class="bg-white p-4 rounded shadow-sm hover:shadow-md transition-shadow duration-200 border-l-4 <%= event.type == 'Meal' ? 'border-green-400' : 'border-blue-400' %> cursor-grab active:cursor-grabbing">
+  <div class="flex justify-between items-start">
+    <div>
+      <span class="text-xs font-semibold uppercase tracking-wider text-gray-500"><%= event.type %></span>
+      <h3 class="text-lg font-bold text-gray-900"><%= link_to event.title, event_path(event), class: "hover:underline" %></h3>
+    </div>
+    <div class="text-xs text-gray-500 text-right">
+      <div><%= event.start_time.strftime("%b %d") %></div>
+      <div><%= event.start_time.strftime("%H:%M") %></div>
+    </div>
+  </div>
+  
+  <p class="text-gray-600 text-sm mt-2 line-clamp-2"><%= event.description %></p>
+
+  <div class="mt-4 flex justify-between items-center">
+    <div class="space-x-1">
+      <% if event.status == "planned" %>
+        <%= button_to "Start", update_status_event_path(event, status: :doing), method: :patch, class: "text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded hover:bg-blue-200" %>
+      <% elsif event.status == "doing" %>
+        <%= button_to "Finish", update_status_event_path(event, status: :done), method: :patch, class: "text-xs bg-green-100 text-green-800 px-2 py-1 rounded hover:bg-green-200" %>
+      <% end %>
+    </div>
+    
+    <%= link_to "Details", event_path(event), class: "text-sm text-gray-500 hover:text-gray-700" %>
+  </div>
+</div>

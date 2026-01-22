@@ -1,0 +1,52 @@
+<div class="calendar-container w-full">
+  <%= month_calendar(events: events) do |date, events| %>
+    <div class="h-full flex flex-col min-h-[120px] group/cell hover:bg-gray-50 transition-colors duration-200">
+      <!-- Date Number -->
+      <div class="flex justify-end p-2">
+        <span class="inline-flex items-center justify-center w-7 h-7 text-sm font-medium text-gray-500 rounded-full group-hover/cell:bg-white group-hover/cell:shadow-sm">
+          <%= date.day %>
+        </span>
+      </div>
+      
+      <!-- Events List -->
+      <div class="flex-grow flex flex-col gap-1.5 px-1 pb-2 overflow-y-auto custom-scrollbar">
+        <% events.each do |event| %>
+          <% is_meal = event.type == 'Meal' %>
+          <%= link_to event_path(event), 
+              class: "group flex items-center gap-2 px-2 py-1.5 rounded-md text-xs font-medium transition-all duration-200 shadow-sm ring-1 ring-inset hover:shadow-md hover:scale-[1.02] #{
+                is_meal ? 
+                'bg-emerald-50 text-emerald-700 ring-emerald-200 hover:bg-emerald-100 hover:ring-emerald-300' : 
+                'bg-indigo-50 text-indigo-700 ring-indigo-200 hover:bg-indigo-100 hover:ring-indigo-300'
+              }" do %>
+            
+            <!-- Icon -->
+            <span class="shrink-0 opacity-70 group-hover:opacity-100 transition-opacity">
+              <% if is_meal %>
+                <!-- Meal Icon (Heart) -->
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              <% else %>
+                <!-- Activity Icon (Calendar/Star) -->
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              <% end %>
+            </span>
+
+            <div class="min-w-0 flex-1">
+              <div class="flex items-baseline gap-1.5">
+                <span class="font-bold shrink-0 opacity-75">
+                  <%= event.start_time.strftime("%l:%M%P").strip %>
+                </span>
+                <span class="truncate block">
+                  <%= event.title %>
+                </span>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

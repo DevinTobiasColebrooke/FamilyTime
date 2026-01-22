@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+}
+
+/* Simple Calendar Overrides for a Polished Look */
+@layer components {
+  .simple-calendar {
+    @apply w-full;
+  }
+
+  .simple-calendar table {
+    @apply w-full border-collapse table-fixed;
+  }
+
+  .simple-calendar thead th {
+    @apply py-3 px-4 text-center text-sm font-semibold text-gray-700 border-b border-gray-200 bg-gray-50 uppercase tracking-wider;
+  }
+
+  .simple-calendar tbody td {
+    @apply border border-gray-100 align-top h-32 md:h-40 transition-colors duration-200 hover:bg-gray-50/50 p-0;
+  }
+  
+  /* Hide the default simple_calendar header if you want to rely on your own, 
+     or style it to match. Here we style the navigation links if they exist. */
+  .simple-calendar .calendar-heading {
+    @apply flex justify-between items-center mb-6 px-2;
+  }
+
+  .simple-calendar .calendar-heading a {
+    @apply px-3 py-1 rounded-md text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors;
+  }
+
+  .simple-calendar .calendar-title {
+    @apply text-xl font-bold text-gray-800;
+  }
+}
