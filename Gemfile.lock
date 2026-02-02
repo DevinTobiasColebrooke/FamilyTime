@@ -160,7 +160,7 @@ GEM
     google-protobuf (4.33.4-x86_64-linux-musl)
       bigdecimal
       rake (>= 13)
-    guard (2.20.0)
+    guard (2.20.1)
       formatador (>= 0.2.4)
       listen (>= 2.7, < 4.0)
       logger (~> 1.6)
@@ -513,7 +513,7 @@ DEPENDENCIES
   capybara
   debug
   factory_bot_rails (~> 6.5, >= 6.5.1)
-  guard (~> 2.19, >= 2.19.1)
+  guard (~> 2.20)
   guard-rspec (~> 4.7, >= 4.7.3)
   ice_cube
   importmap-rails
